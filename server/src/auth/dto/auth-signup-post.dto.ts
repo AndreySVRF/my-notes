@@ -13,6 +13,7 @@ class AuthSignupPostDto {
 	@IsNotEmpty()
 	firstName: string;
 
+	@IsString()
 	lastName: string;
 }
 
