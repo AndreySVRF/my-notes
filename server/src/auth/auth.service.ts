@@ -1,8 +1,11 @@
 import {ForbiddenException, Injectable} from '@nestjs/common';
 import * as argon from 'argon2';
 import {PrismaClientKnownRequestError} from '@prisma/client/runtime';
+import {JwtService} from '@nestjs/jwt';
 import {PrismaService} from '../prisma';
 import {AuthSigninPostDto, AuthSignupPostDto} from './dto';
+import {ConfigService} from '@nestjs/config';
+import {IAccessToken} from './auth.service.interfase';
 
 const CREDENTIALS_TAKEN = 'Credentials taken';
 const USER_EMAIL_NOT_FOUND = 'User with this email not found';
@@ -10,9 +13,13 @@ const INCORRECT_PASSWORD = 'Incorrect password';
 
 @Injectable({})
 class AuthService {
-	constructor(private prisma: PrismaService) {}
+	constructor(
+		private prisma: PrismaService,
+		private jwt: JwtService,
+		private config: ConfigService
+	) {}
 
-	async signup(dto: AuthSignupPostDto) {
+	async signup(dto: AuthSignupPostDto): Promise<IAccessToken> {
 		const hash = await argon.hash(dto.password);
 
 		try {
@@ -25,9 +32,7 @@ class AuthService {
 				},
 			});
 
-			delete user.password;
-
-			return user;
+			return this.signToken(user.id, user.email);
 		} catch (error) {
 			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2002') {
@@ -38,7 +43,7 @@ class AuthService {
 		}
 	}
 
-	async signin(dto: AuthSigninPostDto) {
+	async signin(dto: AuthSigninPostDto): Promise<IAccessToken> {
 		const user = await this.prisma.user.findUnique({
 			where: {
 				email: dto.email,
@@ -55,9 +60,26 @@ class AuthService {
 			throw new ForbiddenException(INCORRECT_PASSWORD);
 		}
 
-		delete user.password;
+		return this.signToken(user.id, user.email);
+	}
 
-		return user;
+	async signToken(userId: number, email: string): Promise<IAccessToken> {
+		const payload = {
+			sub: userId,
+			email,
+		};
+
+		const timeout = this.config.get('JWT_TIMEOUT');
+		const secret = this.config.get('JWT_SECRET');
+
+		const token = await this.jwt.signAsync(payload, {
+			expiresIn: timeout,
+			secret,
+		});
+
+		return {
+			accessToken: token,
+		};
 	}
 }
 
