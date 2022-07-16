@@ -2,4 +2,9 @@ interface IAccessToken {
 	accessToken: string;
 }
 
-export {IAccessToken};
+interface IPayload {
+	sub: number;
+	email: string;
+}
+
+export {IAccessToken, IPayload};
