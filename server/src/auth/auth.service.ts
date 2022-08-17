@@ -1,10 +1,15 @@
 import {ForbiddenException, Injectable} from '@nestjs/common';
-import * as argon from 'argon2';
+import {ConfigService} from '@nestjs/config';
 import {PrismaClientKnownRequestError} from '@prisma/client/runtime';
+import * as argon from 'argon2';
 import {JwtService} from '@nestjs/jwt';
 import {PrismaService} from '../prisma';
-import {AuthSigninPostDto, AuthSignupPostDto} from './dto';
-import {ConfigService} from '@nestjs/config';
+import {
+	AuthSigninRequestPostDto,
+	AuthSigninResponsePostDto,
+	AuthSignupRequestPostDto,
+	AuthSignupResponsePostDto,
+} from './dto';
 import {IAccessToken} from './auth.service.interfase';
 
 const CREDENTIALS_TAKEN = 'Credentials taken';
@@ -19,7 +24,9 @@ class AuthService {
 		private config: ConfigService
 	) {}
 
-	async signup(dto: AuthSignupPostDto): Promise<IAccessToken> {
+	async signup(
+		dto: AuthSignupRequestPostDto
+	): Promise<AuthSignupResponsePostDto> {
 		const hash = await argon.hash(dto.password);
 
 		try {
@@ -43,7 +50,9 @@ class AuthService {
 		}
 	}
 
-	async signin(dto: AuthSigninPostDto): Promise<IAccessToken> {
+	async signin(
+		dto: AuthSigninRequestPostDto
+	): Promise<AuthSigninResponsePostDto> {
 		const user = await this.prisma.user.findUnique({
 			where: {
 				email: dto.email,
