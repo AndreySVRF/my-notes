@@ -1,12 +1,13 @@
 import {PrismaService} from '../prisma';
-import {UserUpdatePatchDto} from './dto';
+import {UserUpdateRequestPatchDto} from './dto';
 import {Injectable} from '@nestjs/common';
+import {User} from '@prisma/client';
 
 @Injectable()
 class UserService {
 	constructor(private prisma: PrismaService) {}
 
-	async update(id: number, dto: UserUpdatePatchDto) {
+	async update(id: number, dto: UserUpdateRequestPatchDto): Promise<User> {
 		try {
 			const user = await this.prisma.user.update({
 				where: {
