@@ -9,6 +9,7 @@ import {BadRequestResponseDto, ForbiddenResponseDto} from '../dto';
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	Param,
 	Post,
@@ -19,6 +20,7 @@ import {CategoryService} from './category.service';
 import {
 	CategoryCreateRequestPostDto,
 	CategoryCreateResponsePostDto,
+	CategoryRemoveResponseDeleteDto,
 	CategoryResponseGetDto,
 	CategoryUpdateRequestPutDto,
 	CategoryUpdateResponsePutDto,
@@ -126,6 +128,31 @@ class CategoryController {
 		@GetUser('id') userId: number
 	): Promise<CategoryUpdateResponsePutDto> {
 		return this.categoryService.update(dto, userId);
+	}
+
+	@ApiOperation({summary: 'Remove category by id'})
+	@ApiResponse({
+		status: 200,
+		description: 'OK',
+		type: CategoryRemoveResponseDeleteDto,
+	})
+	@ApiResponse({
+		status: 400,
+		description: 'Bad Request',
+		type: BadRequestResponseDto,
+	})
+	@ApiResponse({
+		status: 403,
+		description: 'Forbidden',
+		type: ForbiddenResponseDto,
+	})
+	@ApiParam({name: 'id', description: 'Category id'})
+	@Delete(':id')
+	remove(
+		@Param('id') id: number,
+		@GetUser('id') userId: number
+	): Promise<CategoryUpdateResponsePutDto> {
+		return this.categoryService.remove(id, userId);
 	}
 }
 

@@ -86,6 +86,26 @@ class CategoryService {
 			throw error;
 		}
 	}
+
+	async remove(id: number, userId: number): Promise<Category> {
+		try {
+			const isCategoryBelongsToUser = await this.getById(id, userId);
+
+			if (isCategoryBelongsToUser) {
+				const category = await this.prisma.category.delete({
+					where: {
+						id: Number(id),
+					},
+				});
+
+				return category;
+			}
+
+			throw new NotFoundException(CATEGORY_NOT_FOUND);
+		} catch (error) {
+			throw error;
+		}
+	}
 }
 
 export {CategoryService};
