@@ -80,8 +80,6 @@ class CategoryService {
 
 				return category;
 			}
-
-			throw new NotFoundException(CATEGORY_NOT_FOUND);
 		} catch (error) {
 			throw error;
 		}
@@ -100,8 +98,6 @@ class CategoryService {
 
 				return category;
 			}
-
-			throw new NotFoundException(CATEGORY_NOT_FOUND);
 		} catch (error) {
 			throw error;
 		}
