@@ -37,5 +37,21 @@ model Category {
   userId Int
   user User @relation(fields: [userId], references: [id])
 
+  notes Note[]
+
   @@map("categories")
+}
+
+model Note {
+	id        Int      @id @default(autoincrement())
+	createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title String
+  description String?
+
+  categoryId Int
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@map("notes")
 }
