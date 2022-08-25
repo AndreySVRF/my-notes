@@ -6,12 +6,22 @@ import {
 	ApiTags,
 } from '@nestjs/swagger';
 import {BadRequestResponseDto, ForbiddenResponseDto} from '../dto';
-import {Body, Controller, Get, Param, Post, UseGuards} from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Get,
+	Param,
+	Post,
+	Put,
+	UseGuards,
+} from '@nestjs/common';
 import {CategoryService} from './category.service';
 import {
 	CategoryCreateRequestPostDto,
 	CategoryCreateResponsePostDto,
 	CategoryResponseGetDto,
+	CategoryUpdateRequestPutDto,
+	CategoryUpdateResponsePutDto,
 } from './dto';
 import {GetUser} from '../auth/decorator';
 import {JwtGuard} from '../auth/guard';
@@ -91,6 +101,31 @@ class CategoryController {
 		@GetUser('id') userId: number
 	): Promise<CategoryResponseGetDto> {
 		return this.categoryService.getById(id, userId);
+	}
+
+	@ApiOperation({summary: 'Update category by id'})
+	@ApiResponse({
+		status: 200,
+		description: 'OK',
+		type: CategoryUpdateResponsePutDto,
+	})
+	@ApiResponse({
+		status: 400,
+		description: 'Bad Request',
+		type: BadRequestResponseDto,
+	})
+	@ApiResponse({
+		status: 403,
+		description: 'Forbidden',
+		type: ForbiddenResponseDto,
+	})
+	@ApiBody({type: CategoryUpdateRequestPutDto})
+	@Put()
+	update(
+		@Body() dto: CategoryUpdateRequestPutDto,
+		@GetUser('id') userId: number
+	): Promise<CategoryUpdateResponsePutDto> {
+		return this.categoryService.update(dto, userId);
 	}
 }
 

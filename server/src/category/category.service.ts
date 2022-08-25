@@ -1,7 +1,7 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {PrismaService} from '../prisma';
 import {Category} from '@prisma/client';
-import {CategoryCreateRequestPostDto} from './dto';
+import {CategoryCreateRequestPostDto, CategoryUpdateRequestPutDto} from './dto';
 
 const CATEGORY_NOT_FOUND = 'Category with given id is not found';
 
@@ -55,6 +55,33 @@ class CategoryService {
 			}
 
 			return category;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async update(
+		dto: CategoryUpdateRequestPutDto,
+		userId: number
+	): Promise<Category> {
+		try {
+			const isCategoryBelongsToUser = await this.getById(dto.id, userId);
+
+			if (isCategoryBelongsToUser) {
+				const category = await this.prisma.category.update({
+					where: {
+						id: Number(dto.id),
+					},
+					data: {
+						title: dto.title,
+						iconColor: dto.iconColor,
+					},
+				});
+
+				return category;
+			}
+
+			throw new NotFoundException(CATEGORY_NOT_FOUND);
 		} catch (error) {
 			throw error;
 		}
