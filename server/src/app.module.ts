@@ -4,6 +4,7 @@ import {PrismaModule} from './prisma';
 import {AuthModule} from './auth';
 import {UserModule} from './user';
 import {CategoryModule} from './category';
+import {NoteModule} from './note/note.module';
 
 @Module({
 	imports: [
@@ -14,6 +15,7 @@ import {CategoryModule} from './category';
 		UserModule,
 		CategoryModule,
 		PrismaModule,
+		NoteModule,
 	],
 })
 class AppModule {}

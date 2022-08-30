@@ -105,7 +105,7 @@ class CategoryController {
 		return this.categoryService.getById(id, userId);
 	}
 
-	@ApiOperation({summary: 'Update category by id'})
+	@ApiOperation({summary: 'Update category'})
 	@ApiResponse({
 		status: 200,
 		description: 'OK',
