@@ -1,0 +1,69 @@
+{
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "prettier"
+  ],
+  "rules": {
+    "react-hooks/exhaustive-deps": "error",
+    "eqeqeq": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "@typescript-eslint/consistent-type-imports": "error",
+    "newline-before-return": "error",
+    "react/self-closing-comp": "error",
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
+    "curly": "error",
+    "no-return-await": "error",
+    "no-useless-return": "error",
+    "no-dupe-else-if": "error",
+    "no-duplicate-case": "error",
+    "no-empty": [
+      "error",
+      {
+        "allowEmptyCatch": true
+      }
+    ],
+    "no-setter-return": "error",
+    "no-unreachable": "error",
+    "no-unreachable-loop": "error",
+    "valid-typeof": [
+      "error",
+      {
+        "requireStringLiterals": true
+      }
+    ],
+    "default-case": "error",
+    "default-case-last": "error",
+    "default-param-last": "error",
+    "no-alert": "error",
+    "no-duplicate-imports": "off",
+    "@typescript-eslint/no-duplicate-imports": [
+      "error"
+    ],
+    "prefer-const": "error",
+    "no-trailing-spaces": "error",
+    "arrow-parens": "error",
+    "prefer-template": "error",
+    "@typescript-eslint/adjacent-overload-signatures": "error",
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "error"
+        ]
+      }
+    ],
+    "radix": "error",
+    "object-property-newline": [
+      "error",
+      {
+        "allowAllPropertiesOnSameLine": true
+      }
+    ],
+    "brace-style": "error"
+  }
+}
