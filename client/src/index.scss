@@ -1,0 +1,30 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html[data-theme='light'] {
+  --button-text-color: #ffffff;
+  --button-backgroud-color: #008ffd;
+  --button-border-color: #008ffd;
+
+  --background-color: #eeeff2;
+
+  --sidebar-background-color: #ffffff;
+}
+
+html[data-theme='dark'] {
+  --button-text-color: #ffffff;
+  --button-backgroud-color: #008ffd;
+  --button-border-color: #008ffd;
+
+  --background-color: #383a3d;
+
+  --sidebar-background-color: #383740;
+}
+
+body {
+  font-size: 14px;
+  background-color: var(--background-color);
+}
